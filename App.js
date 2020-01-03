@@ -3,15 +3,20 @@ import { combineReducers, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import productsReducer from './store/reducers/products';
+import cartReducer from './store/reducers/cart';
+import orderReducer from './store/reducers/orders';
 import ShopNavigator from './navigation/ShopNavigator';
 
 const rootReducer = combineReducers({
-    products: productsReducer
+    products: productsReducer,
+    cart: cartReducer,
+    orders: orderReducer
 });
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, composeWithDevTools());
 
 const fetchEvents = () => {
     return Font.loadAsync({
