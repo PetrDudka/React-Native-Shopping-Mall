@@ -15,7 +15,7 @@ const ordersReducer = (state = initialState, action) => {
                 new Date());
             return {
                 ...state,
-                orders: state.orders.contact(newOrder)
+                orders: [...state.orders, newOrder]
             };
         default: 
             return state;

@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, Image, Button, StyleSheet, TouchableOpacity, TouchableNativeFeedback, Platform } from 'react-native';
-
-import Colors from '../../constants/Colors';
+import { View, Text, Image, StyleSheet, TouchableOpacity, TouchableNativeFeedback, Platform } from 'react-native';
+import Card from '../UI/Card';
 
 const ProductItem = props => {
     let TouchableCmp = TouchableOpacity;
@@ -11,9 +10,9 @@ const ProductItem = props => {
     }
 
     return (
-        <View style={styles.product}>
+        <Card style={styles.product}>
             <View style={styles.touchable}>
-                <TouchableCmp onPress={props.onViewDetail}>
+                <TouchableCmp onPress={props.onSelect}>
                     <View>
                         <View style={styles.imageContainer}>
                             <Image style={styles.image} source={{uri: props.image}} />
@@ -23,27 +22,19 @@ const ProductItem = props => {
                             <Text style={styles.price}>${props.price.toFixed(2)}</Text>
                         </View>
                         <View style={styles.actions}>
-                            <Button color={Colors.primary} title='View Details' onPress={props.onViewDetail} />
-                            <Button color={Colors.primary} title='To Cart' onPress={props.onAddToCart} />
+                            {props.children}
                         </View>
                     </View>
                 </TouchableCmp>
             </View>
-        </View>
+        </Card>
     )
 };
 
 const styles = StyleSheet.create({
     product: {
-        shadowColor: 'black',
-        shadowOffset: 0.26,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 8,
-        elevation: 5,
         margin: 20,
-        height: 300,
-        backgroundColor: 'white',
-        borderRadius: 10,
+        height: 300
     },
     touchable: {
         overflow: 'hidden',
@@ -79,7 +70,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: '25%',
+        height: '23%',
         paddingHorizontal: 20
     }
 })
