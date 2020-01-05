@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
     FlatList,
     Button,
-    StyleSheet
+    StyleSheet,
+    ActivityIndicator
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -17,6 +18,7 @@ import Card from '../../components/UI/Card';
 const CartScreen = props => {
     const cartTotalAmount = useSelector(state => state.cart.totalAmount);
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
 
     const cartItems = useSelector(state => {
         const transformedCartItems = [];
@@ -30,20 +32,28 @@ const CartScreen = props => {
             })
         }
         return transformedCartItems.sort((a, b) => a.productId > b.productId ? 1 : -1);
-    })
+    });
+
+    const sendOrderHandler = async () => {
+        setIsLoading(true);
+        await dispatch(orderActions.addOrder(cartItems, cartTotalAmount));
+        setIsLoading(false);
+    };
 
     return (
         <View style={styles.screen}>
             <Card style={styles.summary}>
                 <Text style={styles.summaryText}>
                     Total: <Text style={styles.amount}>${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}</Text></Text>
-                <Button 
-                    color={Colors.accent} 
-                    title='Order Now' 
-                    disabled={cartItems.length === 0}
-                    onPress={() => {
-                        dispatch(orderActions.addOrder(cartItems, cartTotalAmount))
-                    }} />
+                {isLoading ? (
+                    <ActivityIndicator size='small' color={Colors.primary} />
+                ) : (
+                    <Button 
+                        color={Colors.accent} 
+                        title='Order Now' 
+                        disabled={cartItems.length === 0}
+                        onPress={sendOrderHandler} />
+                )}
             </Card>
             <FlatList 
                 data={cartItems} 
